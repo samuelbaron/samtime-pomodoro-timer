@@ -202,15 +202,53 @@ export default {
     finished(selectedTime) {
       this.lastSessionTime = selectedTime
 
-      // let today = new Date();
-      // let dd = String(today.getDate()).padStart(2, '0');
-      // let mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
-      // let yyyy = today.getFullYear();
-      //
-      // today = mm + '/' + dd + '/' + yyyy;
-      // document.write(today);
+      let m_names = ["January", "February", "March",
+        "April", "May", "June", "July", "August", "September",
+        "October", "November", "December"];
 
-      this.$store.commit("addSession", selectedTime);
+      let mydate = new Date();
+      let curr_date = mydate.getDate();
+      let curr_month = mydate.getMonth();
+      let curr_year = mydate.getFullYear();
+      let weekDay = ""
+
+      let day = new Date().getDay()
+      if (day === 1) {
+        weekDay = "Monday"
+      } else if (day === 2) {
+        weekDay = "Tuesday"
+      } else if (day === 3) {
+        weekDay = "Wednesday"
+      } else if (day === 4) {
+        weekDay = "Thursday"
+      } else if (day === 5) {
+        weekDay = "Friday"
+      } else if (day === 6) {
+        weekDay = "Saturday"
+      } else if (day === 7) {
+        weekDay = "Sunday"
+      }
+      console.log(weekDay)
+
+
+      let mydatestr = '' + curr_year  + ' ' +
+        curr_month + ' ' +
+        curr_date+ ' ' +
+        mydate.getHours() + ':' +
+        mydate.getMinutes()
+
+      let session = {
+        duration: selectedTime,
+        time: mydatestr,
+        day: weekDay
+      }
+
+      this.$store.commit("addSession", session);
+      this.$store.commit("addSession", session);
+      this.$store.commit("addSession", session);
+      this.$store.commit("addSession", session);
+      this.$store.commit("addSession", session);
+      this.$store.commit("addSession", session);
     },
     pause() {
       this.paused = !this.paused

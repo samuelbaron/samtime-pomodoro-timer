@@ -13,10 +13,8 @@ export const getters = {
   }
 }
 export const mutations = {
-  addSession: (state, payload) => {
-    let itemfound = state.cart.find(el => el.id === payload.id);
-    itemfound
-      ? (itemfound.quantity += payload.quantity)
-      : state.cart.push(payload)
+  addSession: (state, session) => {
+
+    state.completedSessions.unshift(session)
   },
 }
