@@ -120,8 +120,7 @@
 <script>
 import {mapGetters} from "vuex";
 import AppPageName from '~/components/AppPageName.vue';
-import Cookies from "js.cookie";
-
+import db from '@/fb'
 export default {
   components: {
     AppPageName,
@@ -152,8 +151,7 @@ export default {
   computed: {
     displayOverlay() {
       return this.lastSessionTime;
-    },
-    ...mapGetters(["pastSessions"])
+    }
   },
 
   methods: {
@@ -274,13 +272,10 @@ export default {
         // time: mydatestr,
         day: weekDay
       }
-      let updatedArray = Cookies.get('sessions') || []
-      updatedArray.unshift(session)
-      Cookies.remove('sessions')
 
-      Cookies.set('sessions', updatedArray)
-
-      // this.$store.commit("updateSessions", Cookies.get('sessions'));
+      db.collection('sessions').add(session).then(() => {
+        console.log("Added to db")
+      })
     },
   },
 }

@@ -1,6 +1,7 @@
 <template>
   <div>
     <app-page-name path="History"></app-page-name>
+
     <v-col class="mt-4" v-if="sessions">
       <v-card outlined v-for="session in sessions" :key="session.time" color="blue darken-4" class="pa-1 ma-10">
         <v-card-title>{{ session.day }} session</v-card-title>
@@ -11,6 +12,7 @@
         </v-card-text>
       </v-card>
     </v-col>
+
       <v-alert
         dense
         v-else
@@ -19,13 +21,13 @@
       >
         You don't completed any sessions yet
       </v-alert>
+
   </div>
 </template>
 
 <script>
-// import { mapGetters } from "vuex";
 import AppPageName from '~/components/AppPageName.vue';
-import Cookies from "js.cookie";
+import db from '@/fb'
 export default {
   components: {
     AppPageName
@@ -35,18 +37,20 @@ export default {
       sessions: []
     }
   },
-  mounted() {
-    let sessionsFromCookie = Cookies.get('sessions')
-    this.sessions = sessionsFromCookie
+  created() {
+    db.collection("sessions").onSnapshot(res => {
+      const changes = res.docChanges()
+
+      changes.forEach(change => {
+        if (change.type === 'added') {
+          this.sessions.push({
+            ...change.doc.data(),
+            id: change.doc.id
+          })
+        }
+      })
+    })
   },
-  // computed: {
-  //   ...mapGetters(["pastSessions"]),
-  //   cookies() {
-  //     let c = Cookies.get('sessions')
-  //     console.log(c)
-  //     Cookies.get('sessions');
-  //   },
-  // },
 }
 </script>
 
