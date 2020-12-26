@@ -198,7 +198,7 @@ export default {
         }
 
 
-      }, 600)
+      }, 60000)
     },
     pause() {
       this.paused = !this.paused
