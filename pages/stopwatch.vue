@@ -97,7 +97,7 @@
       absolute
       opacity=".6"
     >
-      <v-card color="blue darken-4"  style="width: 50vh; height: 32vh; " class="pa-1">
+      <v-card color="blue darken-4" style="width: 50vh; height: 32vh; " class="pa-1">
         <v-card-title class="h1">You finished a session</v-card-title>
         <v-card-text>
           <v-row justify="center" class="ma-1">
@@ -118,8 +118,9 @@
 </template>
 
 <script>
+import {mapGetters} from "vuex";
 import AppPageName from '~/components/AppPageName.vue';
-import { mapState, mapGetters } from "vuex";
+import Cookies from "js.cookie";
 
 export default {
   components: {
@@ -151,8 +152,10 @@ export default {
   computed: {
     displayOverlay() {
       return this.lastSessionTime;
-    }
+    },
+    ...mapGetters(["pastSessions"])
   },
+
   methods: {
     closeOverlay() {
       this.lastSessionTime = false
@@ -199,57 +202,6 @@ export default {
 
       }, 600)
     },
-    finished(selectedTime) {
-      this.lastSessionTime = selectedTime
-
-      let m_names = ["January", "February", "March",
-        "April", "May", "June", "July", "August", "September",
-        "October", "November", "December"];
-
-      let mydate = new Date();
-      let curr_date = mydate.getDate();
-      let curr_month = mydate.getMonth();
-      let curr_year = mydate.getFullYear();
-      let weekDay = ""
-
-      let day = new Date().getDay()
-      if (day === 1) {
-        weekDay = "Monday"
-      } else if (day === 2) {
-        weekDay = "Tuesday"
-      } else if (day === 3) {
-        weekDay = "Wednesday"
-      } else if (day === 4) {
-        weekDay = "Thursday"
-      } else if (day === 5) {
-        weekDay = "Friday"
-      } else if (day === 6) {
-        weekDay = "Saturday"
-      } else if (day === 7) {
-        weekDay = "Sunday"
-      }
-      console.log(weekDay)
-
-
-      let mydatestr = '' + curr_year  + ' ' +
-        curr_month + ' ' +
-        curr_date+ ' ' +
-        mydate.getHours() + ':' +
-        mydate.getMinutes()
-
-      let session = {
-        duration: selectedTime,
-        time: mydatestr,
-        day: weekDay
-      }
-
-      this.$store.commit("addSession", session);
-      this.$store.commit("addSession", session);
-      this.$store.commit("addSession", session);
-      this.$store.commit("addSession", session);
-      this.$store.commit("addSession", session);
-      this.$store.commit("addSession", session);
-    },
     pause() {
       this.paused = !this.paused
       if (this.paused === true) {
@@ -280,7 +232,56 @@ export default {
       this.interval = "" //to manipulate intervals
       this.timeLeft = '25' //value of minutes
       this.label = "Choose time"
-    }
+    },
+    finished(selectedTime) {
+      this.lastSessionTime = selectedTime
+      // let m_names = ["January", "February", "March",
+      //   "April", "May", "June", "July", "August", "September",
+      //   "October", "November", "December"];
+      //
+      // let mydates = new Date();
+      // let curr_date = mydate.getDate();
+      // let curr_month = mydate.getMonth();
+      // let curr_year = mydate.getFullYear();
+      let weekDay = ""
+      //
+      let day = new Date().getDay()
+      if (day === 1) {
+        weekDay = "Monday"
+      } else if (day === 2) {
+        weekDay = "Tuesday"
+      } else if (day === 3) {
+        weekDay = "Wednesday"
+      } else if (day === 4) {
+        weekDay = "Thursday"
+      } else if (day === 5) {
+        weekDay = "Friday"
+      } else if (day === 6) {
+        weekDay = "Saturday"
+      } else if (day === 7) {
+        weekDay = "Sunday"
+      }
+      //
+      //
+      // let mydatestr = '' + curr_year + ' ' +
+      //   curr_month + ' ' +
+      //   curr_date + ' ' +
+      //   mydates.getHours() + ':' +
+      //   mydates.getMinutes()
+
+      let session = {
+        duration: selectedTime,
+        // time: mydatestr,
+        day: weekDay
+      }
+      let updatedArray = Cookies.get('sessions') || []
+      updatedArray.unshift(session)
+      Cookies.remove('sessions')
+
+      Cookies.set('sessions', updatedArray)
+
+      // this.$store.commit("updateSessions", Cookies.get('sessions'));
+    },
   },
 }
 </script>

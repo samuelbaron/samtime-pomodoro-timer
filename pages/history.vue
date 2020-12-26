@@ -1,30 +1,52 @@
 <template>
   <div>
     <app-page-name path="History"></app-page-name>
-    <v-col class="mt-4">
-      <v-card outlined v-for="session in pastSessions" :key="session.time" color="blue darken-4" class="pa-1 ma-10">
-        <!--      <v-card-title> {{ session.time }} </v-card-title>-->
+    <v-col class="mt-4" v-if="sessions">
+      <v-card outlined v-for="session in sessions" :key="session.time" color="blue darken-4" class="pa-1 ma-10">
         <v-card-title>{{ session.day }} session</v-card-title>
         <v-card-text >
           <span>duration: {{ session.duration }} minutes</span>
-          <br>
-          <span>finished: {{ session.time }}</span>
+          <!--<br>-->
+          <!--<span>finished: {{ session.time }}</span>-->
         </v-card-text>
       </v-card>
     </v-col>
+      <v-alert
+        dense
+        v-else
+        color="blue darken-4"
+        style="position: absolute; color: white; bottom: 1%; width: 80%; margin-left: 10%;"
+      >
+        You don't completed any sessions yet
+      </v-alert>
   </div>
 </template>
 
 <script>
-import { mapGetters } from "vuex";
+// import { mapGetters } from "vuex";
 import AppPageName from '~/components/AppPageName.vue';
+import Cookies from "js.cookie";
 export default {
   components: {
     AppPageName
   },
-  computed: {
-    ...mapGetters(["pastSessions"])
+  data() {
+    return {
+      sessions: []
+    }
   },
+  mounted() {
+    let sessionsFromCookie = Cookies.get('sessions')
+    this.sessions = sessionsFromCookie
+  },
+  // computed: {
+  //   ...mapGetters(["pastSessions"]),
+  //   cookies() {
+  //     let c = Cookies.get('sessions')
+  //     console.log(c)
+  //     Cookies.get('sessions');
+  //   },
+  // },
 }
 </script>
 

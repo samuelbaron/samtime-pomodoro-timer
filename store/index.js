@@ -1,20 +1,22 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
-
+import Cookies from "js.cookie";
 Vue.use(Vuex);
 
 export const state = () => ({
-  completedSessions: []
+  // completedSessions: [] ,
 });
 export const getters = {
-  pastSessions: state => {
-    if (!state.completedSessions.length) return [];
-    return state.completedSessions
-  }
+  // pastSessions: state => {
+  //   if (!state.completedSessions.length) return [];
+  //   return state.completedSessions
+  // }
 }
 export const mutations = {
-  addSession: (state, session) => {
-
-    state.completedSessions.unshift(session)
-  },
+  // addSession: (state, session) => {
+  //   state.completedSessions.unshift(session)
+  // },
+  // updateSessions: (state, payload) => {
+  //   state.completedSessions = payload
+  // }
 }
