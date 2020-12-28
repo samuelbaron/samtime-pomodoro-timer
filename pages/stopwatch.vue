@@ -1,11 +1,13 @@
 <template>
-  <div>
+  <section>
+    <!-- page name -->
     <app-page-name path="Stopwatch"></app-page-name>
 
     <!-- select -->
-    <v-container v-if="selectShow"
-                 fluid
-                 style="margin: auto; position: absolute; top: 7%; left: 0; bottom: 0; right: 29%;">
+    <v-container
+      v-if="selectDisplay"
+      fluid
+      style="margin: auto; position: absolute; top: 7%; left: 0; bottom: 0; right: 29%;">
       <v-row align="center">
         <v-col
           class="d-flex"
@@ -40,13 +42,14 @@
       :width="11"
       :value="progress"
       color="blue darken-3"
+      :color="progressColor"
     >
       <span class="text-h2 font-weight-regular">
       {{ timeLeft }}
       </span>
     </v-progress-circular>
 
-    <!-- buttons if not started -->
+    <!-- button if not started -->
     <div v-if="started === false">
       <v-btn
         @click="start"
@@ -62,7 +65,7 @@
       </v-btn>
     </div>
 
-    <!-- buttons if started-->
+    <!-- buttons if started -->
     <div v-if="started">
       <v-btn
         @click="pause"
@@ -70,7 +73,7 @@
         fab
         dark
         large
-        color="blue darken-3"
+        :color="progressColor"
       >
         <v-icon dark>
           mdi-skip-next
@@ -91,9 +94,9 @@
       </v-btn>
     </div>
 
-
+    <!-- modal of finished session -->
     <v-overlay
-      v-if="displayOverlay"
+      v-if="cartDisplay"
       absolute
       opacity=".6"
     >
@@ -101,7 +104,7 @@
         <v-card-title class="h1">You finished a session</v-card-title>
         <v-card-text>
           <v-row justify="center" class="ma-1">
-            <v-btn large class="ma-3" color="primary" elevation="0" @click="closeOverlay">
+            <v-btn large class="ma-3" color="primary" elevation="0" @click="cartDisplay = false">
               <v-icon left>mdi-skip-next</v-icon>
               Start new session
             </v-btn>
@@ -113,23 +116,24 @@
         </v-card-text>
       </v-card>
     </v-overlay>
-
-  </div>
+  </section>
 </template>
 
 <script>
-import {mapGetters} from "vuex";
 import AppPageName from '~/components/AppPageName.vue';
 import db from '@/fb'
+
 export default {
   components: {
     AppPageName,
   },
+
   data() {
     return {
+      cartDisplay: false,
       paused: false, //if timer is paused
       started: false, //if timer is started
-      selectShow: true, //if display select
+      selectDisplay: true, //if display select
       interval: "", //to manipulate intervals
       selectedTime: "", //watcher to update a value
       progress: "100",
@@ -137,112 +141,90 @@ export default {
 
       timesArray: ['5', '10', '15', '20', '25', '30', '35', '40', '45', '50', '55', '60'],
       selectLabel: "Choose time",
+      progressColor: "blue darken-3",
 
       //if user finished last session
       //(saved to display a pop-up)
       lastSessionTime: false
     }
   },
+
   watch: {
     selectedTime(newValue, oldValue) {
       this.timeLeft = this.selectedTime
     },
   },
-  computed: {
-    displayOverlay() {
-      return this.lastSessionTime;
-    }
-  },
 
   methods: {
-    closeOverlay() {
-      this.lastSessionTime = false
-    },
+    //starts session
     start() {
       this.started = true
-      this.selectShow = false
+      this.selectDisplay = false
       this.progress = "0"
-
       let time = this.timeLeft
-
       //divider is a percent of circle fill
       let divider = 100 / time
       this.divider = divider
 
-      this.update(divider)
+      this.updateInterval(divider)
     },
 
-    update(divider) {
-
+    //updates interface of session
+    updateInterval() {
       let intervalId = setInterval(() => {
         this.interval = intervalId
         let progress = parseInt(this.progress)
-
-        //update percent of circle fill
-        this.progress = progress + divider
+        this.progress = progress + this.divider
 
         if (this.timeLeft > 0) {
           this.timeLeft--
-        } else {
-          this.finished(this.selectedTime)
-
-          clearInterval(intervalId)
-
-          this.paused = false //if timer is paused
-          this.progress = 100
-          this.started = false //if timer is started
-          this.selectShow = true //if display select
-          this.interval = "" //to manipulate intervals
-          this.timeLeft = this.selectedTime //value of minutes
-          this.label = "Choose time"
         }
-
-
-      }, 60000)
+        else {
+          this.finished(this.selectedTime)
+          this.prepareNewStopwatch()
+        }
+      }, 600)
     },
+
+    //pause session
     pause() {
       this.paused = !this.paused
+
       if (this.paused === true) {
+        this.progressColor = "yellow darken-2"
         clearInterval(this.interval)
-      } else {
-        let intervalId = setInterval(() => {
-          this.interval = intervalId
-          let progress = parseInt(this.progress)
-
-          this.progress = progress + this.divider
-
-          if (this.timeLeft > 0) {
-            this.timeLeft--
-          } else {
-            alert("Done")
-            clearInterval(intervalId)
-          }
-        }, 600)
+      }
+      else {
+        this.progressColor = "blue darken-3"
+        this.updateInterval()
       }
     },
+
+    //stop session
     stop() {
       clearInterval(this.interval)
+      this.prepareNewStopwatch()
+    },
 
-      this.paused = false //if timer is paused
+    //prepare new stopwatch
+    prepareNewStopwatch() {
+      this.paused = false
       this.progress = 100
-      this.started = false //if timer is started
-      this.selectShow = true //if display select
-      this.interval = "" //to manipulate intervals
-      this.timeLeft = '25' //value of minutes
+      this.started = false
+      this.selectDisplay = true
+      this.interval = ""
+      this.timeLeft = this.selectedTime
       this.label = "Choose time"
     },
+
+    //session is finished
     finished(selectedTime) {
-      this.lastSessionTime = selectedTime
-      // let m_names = ["January", "February", "March",
-      //   "April", "May", "June", "July", "August", "September",
-      //   "October", "November", "December"];
-      //
-      // let mydates = new Date();
-      // let curr_date = mydate.getDate();
-      // let curr_month = mydate.getMonth();
-      // let curr_year = mydate.getFullYear();
+      clearInterval(this.interval)
+      this.prepareNewStopwatch()
+      this.cartDisplay = true
+
+      //prepare session data
       let weekDay = ""
-      //
       let day = new Date().getDay()
       if (day === 1) {
         weekDay = "Monday"
@@ -259,27 +241,14 @@ export default {
       } else if (day === 7) {
         weekDay = "Sunday"
       }
-      //
-      //
-      // let mydatestr = '' + curr_year + ' ' +
-      //   curr_month + ' ' +
-      //   curr_date + ' ' +
-      //   mydates.getHours() + ':' +
-      //   mydates.getMinutes()
-
       let session = {
         duration: selectedTime,
-        // time: mydatestr,
         day: weekDay
       }
 
-      db.collection('sessions').add(session).then(() => {
-        console.log("Added to db")
-      })
+      //add in database
+      db.collection('sessions').add(session).then(() => {})
     },
   },
 }
 </script>
-
-<style scoped>
-</style>

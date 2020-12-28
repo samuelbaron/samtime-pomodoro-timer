@@ -1,7 +1,7 @@
 <template>
-  <div>
+  <section>
     <app-page-name path="Home"></app-page-name>
-  </div>
+  </section>
 </template>
 
 <script>
@@ -13,8 +13,3 @@ export default {
   }
 }
 </script>
-
-<style scoped>
-
-
-</style>

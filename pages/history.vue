@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <section>
     <app-page-name path="History"></app-page-name>
 
     <v-col class="mt-4" v-if="sessions">
@@ -22,7 +22,7 @@
         You don't completed any sessions yet
       </v-alert>
 
-  </div>
+  </section>
 </template>
 
 <script>
@@ -53,7 +53,3 @@ export default {
   },
 }
 </script>
-
-<style scoped>
-
-</style>
