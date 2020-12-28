@@ -23,8 +23,8 @@
             outlined
             flat
             autofocus
-            :items="timesArray"
-            :label='`${selectLabel}`'
+            :items="times"
+            :label="selectedTime"
             dark
             dense
             solo
@@ -131,21 +131,16 @@ export default {
   data() {
     return {
       cartDisplay: false,
-      paused: false, //if timer is paused
-      started: false, //if timer is started
-      selectDisplay: true, //if display select
-      interval: "", //to manipulate intervals
-      selectedTime: "", //watcher to update a value
+      paused: false, // if timer is paused
+      started: false, // if timer is started
+      selectDisplay: true, // if display select
+      interval: "", // to manipulate intervals
+      selectedTime: "Choose time", // watcher to update a value
       progress: "100",
-      timeLeft: '25', //value of minutes
+      timeLeft: '25', // value of minutes
 
-      timesArray: ['5', '10', '15', '20', '25', '30', '35', '40', '45', '50', '55', '60'],
-      selectLabel: "Choose time",
-      progressColor: "blue darken-3",
-
-      //if user finished last session
-      //(saved to display a pop-up)
-      lastSessionTime: false
+      times: ['5', '10', '15', '20', '25', '30', '35', '40', '45', '50', '55', '60'], // select options
+      progressColor: "blue darken-3" // default color of button and progress circle
     }
   },
 
@@ -214,7 +209,6 @@ export default {
       this.selectDisplay = true
       this.interval = ""
       this.timeLeft = this.selectedTime
-      this.label = "Choose time"
     },
 
     //session is finished
@@ -246,9 +240,14 @@ export default {
         day: weekDay
       }
 
-      //add in database
-      db.collection('sessions').add(session).then(() => {})
+      this.addSessionToDatabase(session)
     },
+    //add to the database
+    addSessionToDatabase(session) {
+      db.collection('sessions').add(session).then(() => {
+        console.log("ok")
+      })
+    }
   },
 }
 </script>
