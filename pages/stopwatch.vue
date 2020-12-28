@@ -178,7 +178,7 @@ export default {
           this.finished(this.selectedTime)
           this.prepareNewStopwatch()
         }
-      }, 600)
+      }, 60000)
     },
 
     //pause session
@@ -245,7 +245,6 @@ export default {
     //add to the database
     addSessionToDatabase(session) {
       db.collection('sessions').add(session).then(() => {
-        console.log("ok")
       })
     }
   },
