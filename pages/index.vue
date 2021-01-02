@@ -1,7 +1,6 @@
 <template>
   <section>
-    <app-page-name path="Home" v-if="logged"></app-page-name>
-    <div v-if="!logged" style="display: flex; height: 100vh; justify-content: center; flex-direction: column;">
+    <div v-if="logged === false" style="display: flex; height: 100vh; justify-content: center; flex-direction: column;">
       <v-form v-model="signInValid" lazy-validation v-if="signInDisplay">
         <v-container>
           <v-row dense justify="center">
@@ -86,6 +85,7 @@
         </v-container>
       </v-form>
     </div>
+    <app-page-name path="Home" v-else></app-page-name>
   </section>
 </template>
 
