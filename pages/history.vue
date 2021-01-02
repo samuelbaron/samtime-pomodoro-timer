@@ -2,7 +2,7 @@
   <section>
     <app-page-name path="History"></app-page-name>
 
-    <v-col class="mt-4" v-if="sessions">
+    <v-col v-if="sessions" style="margin-top: -7%">
       <v-card outlined v-for="session in sessions" :key="session.time" color="blue darken-4" class="pa-1 ma-10">
         <v-card-title>{{ session.day }} session</v-card-title>
         <v-card-text >
@@ -27,7 +27,8 @@
 
 <script>
 import AppPageName from '~/components/AppPageName.vue';
-import db from '@/fb'
+import db from '@/firebase.js';
+import firebase from '@/firebase.js';
 export default {
   components: {
     AppPageName
@@ -38,7 +39,7 @@ export default {
     }
   },
   created() {
-    db.collection("sessions").onSnapshot(res => {
+    firebase.firestore().collection("sessions").onSnapshot(res => {
       const changes = res.docChanges()
 
       changes.forEach(change => {

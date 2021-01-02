@@ -17,7 +17,7 @@
         >
           <v-select
             v-model="selectedTime"
-            item-color="blue darken-3"
+            item-color="primary"
             full-width
             background-color="#0d0f1f"
             outlined
@@ -41,7 +41,7 @@
       :size="290"
       :width="11"
       :value="progress"
-      color="blue darken-3"
+      color="primary"
       :color="progressColor"
     >
       <span class="text-h2 font-weight-regular">
@@ -57,7 +57,7 @@
         fab
         dark
         large
-        color="blue darken-3"
+        color="primary"
       >
         <v-icon dark>
           mdi-skip-next
@@ -121,13 +121,13 @@
 
 <script>
 import AppPageName from '~/components/AppPageName.vue';
-import db from '@/fb'
+// import firestore auth
+import db from '@/firebase'
 
 export default {
   components: {
     AppPageName,
   },
-
   data() {
     return {
       cartDisplay: false,
@@ -140,7 +140,7 @@ export default {
       timeLeft: '25', // value of minutes
 
       times: ['5', '10', '15', '20', '25', '30', '35', '40', '45', '50', '55', '60'], // select options
-      progressColor: "blue darken-3" // default color of button and progress circle
+      progressColor: "primary" // default color of button and progress circle
     }
   },
 
@@ -190,7 +190,7 @@ export default {
         clearInterval(this.interval)
       }
       else {
-        this.progressColor = "blue darken-3"
+        this.progressColor = "primary"
         this.updateInterval()
       }
     },
