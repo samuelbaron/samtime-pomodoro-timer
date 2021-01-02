@@ -1,4 +1,4 @@
-# SAMTIME
+Samtime Pomodoro Timer is a simple timer PWA app
 
 ## Build Setup
 
