@@ -3,7 +3,7 @@ import Vuex from 'vuex';
 Vue.use(Vuex);
 
 export const state = () => ({
-  logged: true
+  logged: false
 });
 export const getters = {
 
