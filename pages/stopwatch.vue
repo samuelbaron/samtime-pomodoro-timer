@@ -121,7 +121,6 @@
 
 <script>
 import AppPageName from '~/components/AppPageName.vue';
-// import firestore auth
 import db from '@/firebase'
 
 export default {

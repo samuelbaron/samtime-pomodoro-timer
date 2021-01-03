@@ -1,5 +1,5 @@
 <template>
-  <v-app style="background-color: #0d0f1f">
+  <v-app style="background-color: #0d0f1f;">
 
     <!--menu for large screens-->
     <app-navigation-medium class="hidden-sm-and-down"/>
@@ -31,3 +31,14 @@ export default {
 
 }
 </script>
+<style>
+.page-enter-active,
+.page-leave-active {
+  transition: opacity .2s;
+  transition-timing-function: ease-in-out;
+}
+.page-enter,
+.page-leave-to {
+  opacity: 0;
+}
+</style>

@@ -25,6 +25,10 @@ export default {
           icon: 'mdi-history',
           route: '/history'
         },
+        {
+          icon: 'mdi-account-circle',
+          route: '/account'
+        },
       ]
     }
   },
