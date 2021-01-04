@@ -122,6 +122,7 @@
 <script>
 import AppPageName from '~/components/AppPageName.vue';
 import db from '@/firebase'
+import firebase from '@/firebase.js';
 
 export default {
   components: {
@@ -177,7 +178,7 @@ export default {
           this.finished(this.selectedTime)
           this.prepareNewStopwatch()
         }
-      }, 60000)
+      }, 600)
     },
 
     //pause session
@@ -214,7 +215,12 @@ export default {
     finished(selectedTime) {
       clearInterval(this.interval)
       this.prepareNewStopwatch()
+      let audio = new Audio('https://file-examples-com.github.io/uploads/2017/11/file_example_MP3_700KB.mp3')
+      audio.play()
       this.cartDisplay = true
+      setTimeout(function () {
+        audio.pause();
+      }, 6000);
 
       //prepare session data
       let weekDay = ""
@@ -243,7 +249,7 @@ export default {
     },
     //add to the database
     addSessionToDatabase(session) {
-      db.collection('sessions').add(session).then(() => {
+      firebase.firestore().collection('sessions').add(session).then(() => {
       })
     }
   },
