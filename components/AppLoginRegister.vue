@@ -131,17 +131,33 @@ export default {
     }
   },
   methods: {
+
     signUp() {
       firebase.auth().createUserWithEmailAndPassword(this.signUpEmail, this.signUpPassword).then(() => {
         this.$store.commit('login');
+
+        let email = this.signUpEmail
+        let password = this.signUpPassword
+
+        this.$store.commit('userEmail', email)
+        this.$store.commit('userPassword', password)
+
         this.signUpLogin = ''
         this.signUpEmail = ''
         this.signUpPassword = ''
+
       })
     },
     signIn() {
       firebase.auth().signInWithEmailAndPassword(this.signInEmail, this.signInPassword).then(() => {
+        let email = this.signInEmail
+        let password = this.signInPassword
+
+        this.$store.commit('userEmail', email)
+        this.$store.commit('userPassword', password)
+
         this.$store.commit('login')
+
         this.signInEmail = ''
         this.signInPassword = ''
       })

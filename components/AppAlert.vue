@@ -8,18 +8,26 @@
       style="text-align: center"
     >
         <span>
-        Welcome back, Samuel
+        Welcome back, {{ email }}
         </span>
     </v-alert>
   </v-row>
 </template>
 
 <script>
+import {mapState} from "vuex";
+
 export default {
   data() {
     return {
+      login: '',
       alert: true
     }
+  },
+  computed: {
+    ...mapState({
+      email: state => state.email
+    })
   },
   mounted() {
     setTimeout(function () {
@@ -28,7 +36,3 @@ export default {
   }
 }
 </script>
-
-<style scoped>
-
-</style>

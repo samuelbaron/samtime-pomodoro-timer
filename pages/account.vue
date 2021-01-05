@@ -2,21 +2,12 @@
   <div>
     <app-page-name path="Account"></app-page-name>
     <div class="d-flex justify-center" style=" position: absolute; top: 20%; flex-direction: column; width: 70%; margin-left: 15%">
-      <span class="blue--text">Login:</span>
-      <span>samuelbaron</span>
-      <br>
       <span class="blue--text">Email:</span>
-      <span>samuel.baron.pl@gmail.com</span>
+      <span>{{ email }}</span>
+      <span class="blue--text">Registered:</span>
+      <span>Here display some date</span>
     </div>
     <div class="d-flex justify-center">
-      <v-btn
-        style="position: absolute; bottom: 31%"
-        color="primary"
-        dark
-        width="80%"
-      >
-        Change Login
-      </v-btn>
       <v-btn
         style="position: absolute; bottom: 22%"
         color="primary"
@@ -49,9 +40,16 @@
 <script>
 import AppPageName from '~/components/AppPageName.vue';
 import firebase from "@/firebase";
+import {mapState} from "vuex";
 export default {
   components: {
     AppPageName,
+  },
+  computed: {
+    ...mapState({
+      email: state => state.email,
+      password: state => state.password
+    })
   },
   methods: {
     logout() {
