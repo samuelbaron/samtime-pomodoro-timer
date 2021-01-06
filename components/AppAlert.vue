@@ -8,14 +8,13 @@
       style="text-align: center"
     >
         <span>
-        Welcome back, {{ email }}
+          Welcome back
         </span>
     </v-alert>
   </v-row>
 </template>
 
 <script>
-import {mapState} from "vuex";
 
 export default {
   data() {
@@ -24,14 +23,10 @@ export default {
       alert: true
     }
   },
-  computed: {
-    ...mapState({
-      email: state => state.email
-    })
-  },
   mounted() {
+    // display alert for 6 seconds
     setTimeout(function () {
-    }, 8000);
+    }, 6000);
     this.alert = false
   }
 }

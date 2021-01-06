@@ -133,14 +133,19 @@ export default {
   methods: {
 
     signUp() {
-      firebase.auth().createUserWithEmailAndPassword(this.signUpEmail, this.signUpPassword).then(() => {
+      let today  = new Date();
+      let date = today.toLocaleDateString()
+
+      // create user
+      firebase.auth().createUserWithEmailAndPassword(this.signUpEmail, this.signUpPassword).then((cred) => {
+        firebase.firestore().collection('users').doc(cred.user.uid).set({
+          login: this.signUpLogin,
+          email: this.signUpEmail,
+          registrationDate: date
+
+        })
+
         this.$store.commit('login');
-
-        let email = this.signUpEmail
-        let password = this.signUpPassword
-
-        this.$store.commit('userEmail', email)
-        this.$store.commit('userPassword', password)
 
         this.signUpLogin = ''
         this.signUpEmail = ''
@@ -149,13 +154,8 @@ export default {
       })
     },
     signIn() {
+      // login
       firebase.auth().signInWithEmailAndPassword(this.signInEmail, this.signInPassword).then(() => {
-        let email = this.signInEmail
-        let password = this.signInPassword
-
-        this.$store.commit('userEmail', email)
-        this.$store.commit('userPassword', password)
-
         this.$store.commit('login')
 
         this.signInEmail = ''
@@ -166,6 +166,3 @@ export default {
 }
 </script>
 
-<style scoped>
-
-</style>
