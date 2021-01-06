@@ -242,7 +242,8 @@ export default {
       }
       let session = {
         duration: selectedTime,
-        day: weekDay
+        day: weekDay,
+        emailOfUser: this.$store.state.email
       }
 
       this.addSessionToDatabase(session)

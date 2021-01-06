@@ -70,6 +70,8 @@ export default {
         this.registrationDate = doc.data().registrationDate
         this.email = doc.data().email
         this.login = doc.data().login
+
+        // this.$store.state.login = doc.data().login
       })
     })
   },

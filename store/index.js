@@ -4,9 +4,7 @@ Vue.use(Vuex);
 
 export const state = () => ({
   logged: false,
-  login: '',
   email: '',
-  password: ''
 });
 export const getters = {
 
@@ -18,10 +16,7 @@ export const mutations = {
   logout: (state) => {
     state.logged = false;
   },
-  userEmail: (state, payload) => {
+  setUserEmail: (state, payload) => {
     state.email = payload;
-  },
-  userPassword: (state, payload) => {
-    state.password = payload;
   },
 }

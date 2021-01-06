@@ -131,7 +131,6 @@ export default {
     }
   },
   methods: {
-
     signUp() {
       let today  = new Date();
       let date = today.toLocaleDateString()
@@ -142,9 +141,12 @@ export default {
           login: this.signUpLogin,
           email: this.signUpEmail,
           registrationDate: date
-
         })
 
+        //set user email
+        this.$store.commit('setUserEmail', this.signUpEmail)
+
+        //change ui
         this.$store.commit('login');
 
         this.signUpLogin = ''
@@ -156,6 +158,11 @@ export default {
     signIn() {
       // login
       firebase.auth().signInWithEmailAndPassword(this.signInEmail, this.signInPassword).then(() => {
+
+        //set user email
+        this.$store.commit('setUserEmail', this.signInEmail)
+
+        //change ui
         this.$store.commit('login')
 
         this.signInEmail = ''
