@@ -7,8 +7,6 @@
         <v-card-title>{{ session.day }} session</v-card-title>
         <v-card-text >
           <span>duration: {{ session.duration }} minutes</span>
-          <!--<br>-->
-          <!--<span>finished: {{ session.time }}</span>-->
         </v-card-text>
       </v-card>
     </v-col>
@@ -27,7 +25,6 @@
 
 <script>
 import AppPageName from '~/components/AppPageName.vue';
-import db from '@/firebase.js';
 import firebase from '@/firebase.js';
 export default {
   components: {
@@ -39,6 +36,7 @@ export default {
     }
   },
   created() {
+    // get all sessions
     firebase.firestore().collection("sessions").onSnapshot(res => {
       const changes = res.docChanges()
 
