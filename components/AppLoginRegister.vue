@@ -132,7 +132,7 @@ export default {
   },
   methods: {
     signUp() {
-      let today  = new Date();
+      let today = new Date();
       let date = today.toLocaleDateString()
 
       // create user
@@ -148,6 +148,7 @@ export default {
 
         //change ui
         this.$store.commit('login');
+        this.$router.push({path: '/stopwatch'})
 
         this.signUpLogin = ''
         this.signUpEmail = ''
@@ -164,6 +165,7 @@ export default {
 
         //change ui
         this.$store.commit('login')
+        this.$router.push({path: '/stopwatch'})
 
         this.signInEmail = ''
         this.signInPassword = ''

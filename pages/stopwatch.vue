@@ -121,7 +121,6 @@
 
 <script>
 import AppPageName from '~/components/AppPageName.vue';
-import db from '@/firebase'
 import firebase from '@/firebase.js';
 
 export default {
@@ -178,7 +177,7 @@ export default {
           this.finished(this.selectedTime)
           this.prepareNewStopwatch()
         }
-      }, 600)
+      }, 60000)
     },
 
     //pause session
@@ -220,7 +219,7 @@ export default {
       this.cartDisplay = true
       setTimeout(function () {
         audio.pause();
-      }, 6000);
+      }, 4000);
 
       //prepare session data
       let weekDay = ""

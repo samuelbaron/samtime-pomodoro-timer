@@ -14,10 +14,6 @@ export default {
     return {
       buttons: [
         {
-          icon: 'mdi-home',
-          route: '/'
-        },
-        {
           icon: 'mdi-alarm',
           route: '/stopwatch'
         },
