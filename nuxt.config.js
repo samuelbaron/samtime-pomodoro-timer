@@ -43,6 +43,10 @@ export default {
     manifest: {
       name: 'SamTime',
       short_name: 'SamTime',
+      icon: {
+        src: '/static/icon.png',
+        type: 'image/png'
+      },
       lang: 'en',
       start_url : '/',
       theme_color: '#fff',
